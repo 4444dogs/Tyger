@@ -67,5 +67,13 @@ async def ready():
                 approved = True
         if approved == False:
             await client.servers[i].leave()
+@client.listen("server_create")
+async def server_create(server: voltage.Server):
+    approved = False
+    for q in range(len(ast.literal_eval(os.getenv("APPROVED_SERVERS")))):
+            if ast.literal_eval(os.getenv("APPROVED_SERVERS"))[q] == server.id:
+                approved = True
+            if approved == False:
+                await server.leave()
 
 client.run(os.getenv("TOKEN"))
