@@ -60,6 +60,8 @@ async def ready():
     client.add_extension("cogs.numbers")
     client.add_extension("cogs.info")
     client.add_extension("cogs.mod")
+    client.add_extension("cogs.minecraft")
+    client.add_extension("cogs.gtag")
     for i in range(len(client.servers)):
         approved = False
         for q in range(len(ast.literal_eval(os.getenv("APPROVED_SERVERS")))):
