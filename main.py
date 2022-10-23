@@ -3,6 +3,8 @@ from voltage.ext import commands
 import dotenv
 import os
 import ast
+from voltage.internals import HTTPHandler
+
 
 class CustomHelpCommand(commands.HelpCommand):
     async def send_help(self, ctx: commands.CommandContext):
@@ -77,5 +79,25 @@ async def server_create(server: voltage.Server):
                 approved = True
             if approved == False:
                 await server.leave()
+@commands.command(description="Get info about the instance of Tyger you are using.")
+async def instance(ctx: commands.CommandContext):
+    if os.getenv("INSTANCE_NAME") != "": instance_name = os.getenv("INSTANCE_NAME")
+    else: instance_name = "Unnamed Instance"
+    if os.getenv("INSTANCE_DESCRIPTION") != "": instance_description = os.getenv("INSTANCE_DESCRIPTION")
+    else: instance_description = "No Description"
+    if os.getenv("INSTANCE_OWNER") != "": instance_owner = client.get_user(os.getenv("INSTANCE_OWNER")).name
+    else: instance_owner = "No Owner"
+    await ctx.reply(f"""Instance Name: `{instance_name}`
+    Instance Description: `{instance_description}`
+    Instance Owner: `{instance_owner}`""")
+
+if os.getenv("API_URL") != "": api_url = os.getenv("API_URL")
+else: api_url = "https://api.revolt.chat/"
+
+original__init__ = HTTPHandler.__init__
+def new__init__(self, *args, **kwargs):
+    original__init__(self, *args, **kwargs)
+    self.api_url = api_url
+HTTPHandler.__init__ = new__init__
 
 client.run(os.getenv("TOKEN"))

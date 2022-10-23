@@ -1,5 +1,5 @@
 # About
- Tyger is a general-purpose Revolt bot aiming to have features that are similar to the Discrod bot, Dyno.
+ Tyger is a general-purpose Revolt bot aiming to have features that are similar to the Discord bot, Dyno.
 
  WARNING: This bot is still in pre-alpha so it is not recomended that you use it as your primary moderation bot.
 

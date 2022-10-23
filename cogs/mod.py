@@ -1,5 +1,11 @@
 import voltage
 from voltage.ext import commands
+import os
+import dotenv
+
+config = dotenv.dotenv_values("../.env")
+
+dotenv.load_dotenv()
 
 def setup(client) -> commands.Cog:
     mod = commands.Cog(
@@ -9,7 +15,7 @@ def setup(client) -> commands.Cog:
 
     @mod.command(description="Purge / mass delete a certain amount of messages.", aliases=["clear"])
     async def purge(ctx: commands.CommandContext, amount: int):
-        if ctx.author.permissions.manage_messages == True or ctx.author.id == ctx.server.owner.id:
+        if ctx.author.permissions.manage_messages == True or ctx.author.id == ctx.server.owner.id or ctx.author.id == os.getenv("INSTANCE_OWNER"):
             await ctx.channel.purge(amount + 1)
             await ctx.send(f"Purged {str(amount)} messages!")
         else:
@@ -17,7 +23,7 @@ def setup(client) -> commands.Cog:
 
     @mod.command(description="Ban a member.")
     async def ban(ctx: commands.CommandContext, member: voltage.Member, reason: str = "No Reason"):
-        if ctx.author.permissions.ban_members == True or ctx.author.id == ctx.server.owner.id:
+        if ctx.author.permissions.ban_members == True or ctx.author.id == ctx.server.owner.id or ctx.author.id == os.getenv("INSTANCE_OWNER"):
             if ctx.author.id == member.id:
                 await ctx.send("Bro, why would you want to ban yourself?")
             elif member.id == "01GBWFPMTGMWMH89HZQB1PRWYG":
@@ -38,7 +44,7 @@ def setup(client) -> commands.Cog:
             await ctx.reply("Sorry, you must have the `Ban Members` permission to use this command.")
     @mod.command(description="Kick a member.")
     async def kick(ctx: commands.CommandContext, member: voltage.Member, reason:str = "No Reason"):
-        if ctx.author.permissions.kick_members == True or ctx.author.id == ctx.server.owner.id:
+        if ctx.author.permissions.kick_members == True or ctx.author.id == ctx.server.owner.id or ctx.author.id == os.getenv("INSTANCE_OWNER"):
             if ctx.author.id == member.id:
                 await ctx.send("Bro, why would you want to kick yourself?")
             elif member.id == "01GBWFPMTGMWMH89HZQB1PRWYG":
